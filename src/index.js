@@ -1,4 +1,4 @@
-var restify = require("restify");
+import restify from "restify";
 
 const server = restify.createServer({
   name: "weather-service",
