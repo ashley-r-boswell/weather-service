@@ -1,0 +1,20 @@
+{
+  "name": "weather-service",
+  "version": "1.0.0",
+  "description": "Can retrieve the weather for a list of cities.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashley-r-boswell/weather-service.git"
+  },
+  "keywords": [
+    "weather"
+  ],
+  "author": "Ashley Boswell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ashley-r-boswell/weather-service/issues"
+  },
+  "homepage": "https://github.com/ashley-r-boswell/weather-service#readme"
+}
