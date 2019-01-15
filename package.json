@@ -7,7 +7,7 @@
     "test": "jest",
     "watch": "jest --watch",
     "start": "node build/index.js",
-    "build": "babel src --out-dir build",
+    "build": "node -e \"require('ncp').ncp('./resources', './build/resources')\" && babel src --out-dir build",
     "lint": "eslint src test",
     "prestart": "npm run build",
     "prebuild": "npm run test",
@@ -34,6 +34,7 @@
     "haversine": "^1.1.1",
     "lodash": "^4.17.11",
     "moment": "^2.23.0",
+    "ncp": "^2.0.0",
     "request": "^2.88.0",
     "restify": "^7.5.0"
   },

@@ -11,6 +11,7 @@ export default class CityInformationService {
 
   async init() {
     this.cities = await this.loader.parseFile(this.fileName)
+    console.log(`Loaded ${this.cities.length} cities.`)
   }
 
   getCity(cityId) {
