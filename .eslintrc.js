@@ -3,5 +3,8 @@ module.exports = {
   plugins: ['jest'],
   env: {
     'jest/globals': true
+  },
+  rules: {
+    'space-before-function-paren': 0
   }
 }
