@@ -1,3 +1,5 @@
+import { BadRequestError } from 'restify-errors'
+
 export default class CityController {
   constructor(cityInformationService) {
     this.cityInformationService = cityInformationService
@@ -18,6 +20,11 @@ export default class CityController {
 
   findNearbyCities(req, res, next) {
     try {
+      if (!req.query || !req.query.lat || !req.query.lng) {
+        return next(
+          new BadRequestError({ code: 'BadRequestError' }, 'lat/lng required')
+        )
+      }
       const cities = this.cityInformationService.findNearbyCities(
         parseFloat(req.query.lat),
         parseFloat(req.query.lng)
@@ -26,7 +33,7 @@ export default class CityController {
       return next()
     } catch (error) {
       console.error(error)
-      return next(false)
+      return next(error)
     }
   }
 }

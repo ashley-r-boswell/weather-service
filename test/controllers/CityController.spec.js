@@ -4,6 +4,7 @@ import {
   CITY_VIEW_WITH_COORDINATES,
   CITY_ID_AND_NAME
 } from '../fixtures/Cities'
+import { BadRequestError } from 'restify-errors'
 
 jest.mock('../../src/services/CityInformationService')
 
@@ -52,5 +53,55 @@ describe('find nearby cities', () => {
     expect(mockResponse.send).toHaveBeenCalledWith([CITY_ID_AND_NAME])
     expect(mockNextCallback).toHaveBeenCalledTimes(1)
     expect(mockNextCallback).toHaveBeenCalledWith()
+  })
+
+  test('latitude missing', () => {
+    serviceMock.findNearbyCities.mockImplementation((latitude, longitude) => [
+      CITY_ID_AND_NAME
+    ])
+    const cityController = new CityController(serviceMock)
+    mockRequest.query = { lng: '22' }
+
+    cityController.findNearbyCities(mockRequest, mockResponse, mockNextCallback)
+
+    expect(serviceMock.findNearbyCities).not.toBeCalled()
+    expect(mockResponse.send).not.toBeCalled()
+    expect(mockNextCallback).toHaveBeenCalledTimes(1)
+    expect(mockNextCallback).toHaveBeenCalledWith(
+      new BadRequestError({ code: 'BadRequestError' }, 'lat/lng required')
+    )
+  })
+
+  test('longitude missing', () => {
+    serviceMock.findNearbyCities.mockImplementation((latitude, longitude) => [
+      CITY_ID_AND_NAME
+    ])
+    const cityController = new CityController(serviceMock)
+    mockRequest.query = { lat: '21' }
+
+    cityController.findNearbyCities(mockRequest, mockResponse, mockNextCallback)
+
+    expect(serviceMock.findNearbyCities).not.toBeCalled()
+    expect(mockResponse.send).not.toBeCalled()
+    expect(mockNextCallback).toHaveBeenCalledTimes(1)
+    expect(mockNextCallback).toHaveBeenCalledWith(
+      new BadRequestError({ code: 'BadRequestError' }, 'lat/lng required')
+    )
+  })
+
+  test('latitude and longitude missing', () => {
+    serviceMock.findNearbyCities.mockImplementation((latitude, longitude) => [
+      CITY_ID_AND_NAME
+    ])
+    const cityController = new CityController(serviceMock)
+
+    cityController.findNearbyCities(mockRequest, mockResponse, mockNextCallback)
+
+    expect(serviceMock.findNearbyCities).not.toBeCalled()
+    expect(mockResponse.send).not.toBeCalled()
+    expect(mockNextCallback).toHaveBeenCalledTimes(1)
+    expect(mockNextCallback).toHaveBeenCalledWith(
+      new BadRequestError({ code: 'BadRequestError' }, 'lat/lng required')
+    )
   })
 })
