@@ -1,7 +1,10 @@
 import OpenWeatherMapClient from '../../src/clients/OpenWeatherMapClient'
 import config from '../../config'
 import nock from 'nock'
-import { SUCCESSFUL_RESPONSE } from '../fixtures/OpenWeatherMap'
+import {
+  SUCCESSFUL_RESPONSE,
+  UNSUCCESSFUL_RESPONSE
+} from '../fixtures/OpenWeatherMap'
 
 test('get weather by city id', async () => {
   nock('https://api.openweathermap.org')
@@ -27,4 +30,26 @@ test('get weather by city id', async () => {
     'weather',
     'wind'
   ])
+})
+
+test('unknown city id - error thrown', async () => {
+  nock('https://api.openweathermap.org')
+    .filteringPath(/appid=.*/g, 'appid=myAppId')
+    .get('/data/2.5/weather?id=0&appid=myAppId')
+    .reply(400, UNSUCCESSFUL_RESPONSE)
+  const client = new OpenWeatherMapClient(config.openweathermap.apiKey)
+
+  await expect(client.getWeather(0)).rejects.toThrowError(
+    /Unexpected response code/
+  )
+})
+
+test('unknown city id - error thrown', async () => {
+  nock('https://api.openweathermap.org')
+    .filteringPath(/appid=.*/g, 'appid=myAppId')
+    .get('/data/2.5/weather?id=0&appid=myAppId')
+    .replyWithError('timeout')
+  const client = new OpenWeatherMapClient(config.openweathermap.apiKey)
+
+  await expect(client.getWeather(0)).rejects.toThrowError(/Error occurred/)
 })

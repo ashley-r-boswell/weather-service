@@ -41,4 +41,9 @@ const SUCCESSFUL_RESPONSE = {
   cod: 200
 }
 
-export { SUCCESSFUL_RESPONSE }
+const UNSUCCESSFUL_RESPONSE = {
+  cod: '400',
+  message: 'Invalid ID'
+}
+
+export { SUCCESSFUL_RESPONSE, UNSUCCESSFUL_RESPONSE }
