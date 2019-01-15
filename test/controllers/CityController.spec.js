@@ -4,7 +4,7 @@ import {
   CITY_VIEW_WITH_COORDINATES,
   CITY_ID_AND_NAME
 } from '../fixtures/Cities'
-import { BadRequestError } from 'restify-errors'
+import { NotFoundError, BadRequestError } from 'restify-errors'
 
 jest.mock('../../src/services/CityInformationService')
 
@@ -34,6 +34,22 @@ describe('get city', () => {
     expect(mockResponse.send).toHaveBeenCalledWith(CITY_VIEW_WITH_COORDINATES)
     expect(mockNextCallback).toHaveBeenCalledTimes(1)
     expect(mockNextCallback).toHaveBeenCalledWith()
+  })
+
+  test('unknown id', () => {
+    serviceMock.getCity.mockImplementation(cityId => null)
+    const cityController = new CityController(serviceMock)
+    mockRequest.params = { city_id: '5' }
+
+    cityController.getCity(mockRequest, mockResponse, mockNextCallback)
+
+    expect(serviceMock.getCity).toHaveBeenCalledTimes(1)
+    expect(serviceMock.getCity).toHaveBeenCalledWith(5)
+    expect(mockResponse.send).not.toBeCalled()
+    expect(mockNextCallback).toHaveBeenCalledTimes(1)
+    expect(mockNextCallback).toHaveBeenCalledWith(
+      new NotFoundError({ code: 'NotFoundError' }, 'not found')
+    )
   })
 })
 

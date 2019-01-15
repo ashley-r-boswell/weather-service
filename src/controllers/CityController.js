@@ -1,4 +1,4 @@
-import { BadRequestError } from 'restify-errors'
+import { NotFoundError, BadRequestError } from 'restify-errors'
 
 export default class CityController {
   constructor(cityInformationService) {
@@ -10,6 +10,9 @@ export default class CityController {
       const city = this.cityInformationService.getCity(
         parseInt(req.params.city_id)
       )
+      if (!city) {
+        return next(new NotFoundError({ code: 'NotFoundError' }, 'not found'))
+      }
       res.send(city)
       return next()
     } catch (error) {
