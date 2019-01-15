@@ -50,6 +50,9 @@ class WeatherServer {
     this.server.get('/cities/:city_id', (req, res, next) =>
       this.cityController.getCity(req, res, next)
     )
+    this.server.get('/cities', (req, res, next) =>
+      this.cityController.findNearbyCities(req, res, next)
+    )
   }
 
   async listen() {

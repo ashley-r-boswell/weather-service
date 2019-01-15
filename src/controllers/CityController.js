@@ -15,4 +15,18 @@ export default class CityController {
       return next(false)
     }
   }
+
+  findNearbyCities(req, res, next) {
+    try {
+      const cities = this.cityInformationService.findNearbyCities(
+        parseFloat(req.query.lat),
+        parseFloat(req.query.lng)
+      )
+      res.send(cities)
+      return next()
+    } catch (error) {
+      console.error(error)
+      return next(false)
+    }
+  }
 }
