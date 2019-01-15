@@ -1,21 +1,13 @@
-import _ from 'lodash'
 import JSONStream from 'JSONStream'
 import es from 'event-stream'
 import fs from 'fs'
 import zlib from 'zlib'
 
 export default class CompressedJsonFileLoader {
-  constructor(fileName) {
-    this.fileName = fileName
-  }
-
-  async init() {
-    this.cities = await this.parseFile(this.fileName)
-  }
-
   async parseFile(fileName) {
     return new Promise((resolve, reject) => {
       fs.createReadStream(fileName)
+        .on('error', () => reject(new Error('Error loading file')))
         .pipe(zlib.createGunzip())
         .pipe(JSONStream.parse('*'))
         .pipe(
@@ -28,9 +20,5 @@ export default class CompressedJsonFileLoader {
           })
         )
     })
-  }
-
-  getCity(cityId) {
-    return _.find(this.cities, city => city.id === cityId)
   }
 }

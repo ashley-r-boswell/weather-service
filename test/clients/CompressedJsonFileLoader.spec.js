@@ -1,15 +1,19 @@
 import CompressedJsonFileLoader from '../../src/clients/CompressedJsonFileLoader'
 
-import { CITY } from '../fixtures/Cities'
-
 test('load compressed json file', async () => {
-  const loader = new CompressedJsonFileLoader(
+  const loader = new CompressedJsonFileLoader()
+
+  const result = await loader.parseFile(
     './test/resources/tiny.city.list.json.gz'
   )
 
-  await loader.init()
+  expect(result.length).toEqual(28)
+})
 
-  const result = loader.getCity(1283710)
+test('file does not exist - error thrown', async () => {
+  const loader = new CompressedJsonFileLoader()
 
-  expect(result).toEqual(CITY)
+  await expect(
+    loader.parseFile('./test/resources/non-existing-file.json.gz')
+  ).rejects.toThrowError(/Error loading file/)
 })
