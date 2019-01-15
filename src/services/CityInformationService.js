@@ -14,11 +14,12 @@ export default class CityInformationService {
   }
 
   getCity(cityId) {
-    return _.find(this.cities, city => city.id === cityId)
+    const city = _.find(this.cities, city => city.id === cityId)
+    return city ? this.mapCityWithCoordinates(city) : null
   }
 
   findNearbyCities(latitude, longitude) {
-    return _.filter(this.cities, city => {
+    const nearbyCities = _.filter(this.cities, city => {
       const metersToCity = haversine(
         { latitude: latitude, longitude: longitude },
         { latitude: city.coord.lat, longitude: city.coord.lon },
@@ -26,5 +27,22 @@ export default class CityInformationService {
       )
       return metersToCity <= NEARBY_RADIUS
     })
+    return _.map(nearbyCities, city => this.mapToCityAndName(city))
+  }
+
+  mapCityWithCoordinates(city) {
+    return {
+      id: city.id,
+      name: city.name,
+      lat: city.coord.lat,
+      lng: city.coord.lon
+    }
+  }
+
+  mapToCityAndName(city) {
+    return {
+      id: city.id,
+      name: city.name
+    }
   }
 }
