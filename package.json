@@ -28,7 +28,10 @@
   "homepage": "https://github.com/ashley-r-boswell/weather-service#readme",
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
+    "JSONStream": "^1.3.5",
     "dotenv": "^6.2.0",
+    "event-stream": "^4.0.1",
+    "lodash": "^4.17.11",
     "request": "^2.88.0",
     "restify": "^7.5.0"
   },
