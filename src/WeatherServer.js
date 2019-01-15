@@ -1,4 +1,5 @@
 import restify from 'restify'
+import WeatherController from './controllers/WeatherController'
 
 class WeatherServer {
   async start() {
@@ -15,6 +16,9 @@ class WeatherServer {
       res.send(req.params)
       return next()
     })
+    server.get('/cities/:city_id/weather', (req, res, next) =>
+      WeatherController.getWeatherForCity(req, res, next)
+    )
 
     return new Promise(resolve => server.listen(8080, resolve))
   }
