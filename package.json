@@ -5,6 +5,7 @@
   "main": "build/index.js",
   "scripts": {
     "test": "jest",
+    "watch": "jest --watch",
     "start": "node build/index.js",
     "build": "babel src --out-dir build",
     "lint": "eslint src test",
@@ -27,6 +28,8 @@
   "homepage": "https://github.com/ashley-r-boswell/weather-service#readme",
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
+    "dotenv": "^6.2.0",
+    "request": "^2.88.0",
     "restify": "^7.5.0"
   },
   "devDependencies": {
