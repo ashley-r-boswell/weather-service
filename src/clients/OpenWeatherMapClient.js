@@ -1,4 +1,5 @@
 import request from 'request'
+import OpenWeatherMapClientError from './OpenWeatherMapClientError'
 
 export default class OpenWeatherMapClient {
   constructor(apiKey) {
@@ -14,7 +15,7 @@ export default class OpenWeatherMapClient {
         (error, response, body) => {
           if (error) {
             reject(
-              new Error(
+              new OpenWeatherMapClientError(
                 'Error occurred while requesting weather:' +
                   JSON.stringify(error)
               )
@@ -24,15 +25,18 @@ export default class OpenWeatherMapClient {
               resolve(JSON.parse(body))
             } else {
               reject(
-                new Error(
-                  'Unexpected response code when requesting weather:' +
-                    JSON.stringify(response.statusCode)
+                new OpenWeatherMapClientError(
+                  'Unexpected response code when requesting weather:',
+                  response.statusCode,
+                  JSON.parse(body)
                 )
               )
             }
           } else {
             reject(
-              new Error('Unknown error occurred while requesting weather.')
+              new OpenWeatherMapClientError(
+                'Unknown error occurred while requesting weather.'
+              )
             )
           }
         }

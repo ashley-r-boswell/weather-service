@@ -1,3 +1,6 @@
+import OpenWeatherMapClientError from '../clients/OpenWeatherMapClientError'
+import { NotFoundError } from 'restify-errors'
+
 export default class WeatherController {
   constructor(weatherInformationService) {
     this.weatherInformationService = weatherInformationService
@@ -11,8 +14,16 @@ export default class WeatherController {
         return next()
       })
       .catch(error => {
+        if (
+          error instanceof OpenWeatherMapClientError &&
+          error.statusCode === 404 &&
+          error.responseBody &&
+          error.responseBody.message === 'city not found'
+        ) {
+          return next(new NotFoundError({ code: 'NotFoundError' }, 'not found'))
+        }
         console.error(error)
-        return next(false)
+        return next(error)
       })
   }
 }
