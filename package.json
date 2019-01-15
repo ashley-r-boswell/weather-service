@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node build/index.js",
     "build": "babel src --out-dir build",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "prestart": "npm run build",
+    "prebuild": "npm run test",
+    "pretest": "npm run lint"
   },
   "repository": {
     "type": "git",
