@@ -13,11 +13,11 @@ const SUCCESSFUL_RESPONSE = {
   ],
   base: 'stations',
   main: {
-    temp: 298.15,
+    temp: 25,
     pressure: 1010,
     humidity: 94,
-    temp_min: 298.15,
-    temp_max: 298.15
+    temp_min: 25,
+    temp_max: 25
   },
   visibility: 10000,
   wind: {

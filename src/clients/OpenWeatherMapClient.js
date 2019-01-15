@@ -10,7 +10,7 @@ export default class OpenWeatherMapClient {
       request(
         `https://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=${
           this.apiKey
-        }`,
+        }&units=metric`,
         (error, response, body) => {
           if (error) {
             reject(
