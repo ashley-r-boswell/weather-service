@@ -1,8 +1,4 @@
-import WeatherInformationService from '../services/WeatherInformationService'
-import OpenWeatherMapClient from '../clients/OpenWeatherMapClient'
-import Config from '../../config'
-
-class WeatherController {
+export default class WeatherController {
   constructor(weatherInformationService) {
     this.weatherInformationService = weatherInformationService
   }
@@ -20,9 +16,3 @@ class WeatherController {
       })
   }
 }
-
-export default new WeatherController(
-  new WeatherInformationService(
-    new OpenWeatherMapClient(Config.openweathermap.apiKey)
-  )
-)
