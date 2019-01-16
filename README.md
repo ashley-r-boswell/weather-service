@@ -28,9 +28,9 @@ This will locally run the tests, transpile the ES6 code and start the server on 
 Run the following commands to build the production docker container, build a testing docker container and finally to run the test container.
 
 ```
-npm dockerize
-npm dockerize-tests
-npm test-container
+npm run dockerize
+npm run dockerize-tests
+npm run test-container
 ```
 
 ## Routes
