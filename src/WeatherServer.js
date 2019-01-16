@@ -2,13 +2,13 @@ import restify from 'restify'
 import WeatherController from './controllers/WeatherController'
 import WeatherInformationService from './services/WeatherInformationService'
 import OpenWeatherMapClient from './clients/OpenWeatherMapClient'
-import Config from '../config'
 import CityController from './controllers/CityController'
 import CityInformationService from './services/CityInformationService'
 import path from 'path'
 
 class WeatherServer {
-  async start() {
+  async start(config) {
+    this.config = config
     this.buildServer()
     await this.buildControllers()
     this.configureRoutes()
@@ -29,11 +29,11 @@ class WeatherServer {
   async buildControllers() {
     this.weatherController = new WeatherController(
       new WeatherInformationService(
-        new OpenWeatherMapClient(Config.openweathermap.apiKey)
+        new OpenWeatherMapClient(this.config.openweathermap.apiKey)
       )
     )
     const cityInformationService = new CityInformationService(
-      path.join(__dirname, '..', 'resources', 'city.list.json.gz')
+      path.join(__dirname, this.config.cities.relativeFilePath)
     )
     await cityInformationService.init()
     this.cityController = new CityController(cityInformationService)
@@ -57,6 +57,10 @@ class WeatherServer {
 
   async listen() {
     return new Promise(resolve => this.server.listen(8080, resolve))
+  }
+
+  async stop() {
+    return new Promise(resolve => this.server.close(resolve))
   }
 }
 
