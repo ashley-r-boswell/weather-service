@@ -9,9 +9,11 @@
     "start": "node build/index.js",
     "build": "node -e \"require('ncp').ncp('./resources', './build/resources')\" && babel src --out-dir build",
     "lint": "eslint src test",
+    "dockerize": "docker build -t weather-service -f Dockerfile.production .",
+    "dockerize-tests": "docker build -t weather-service-tests -f Dockerfile.test .",
+    "test-container": "docker run --rm weather-service-tests",
     "prestart": "npm run build",
-    "prebuild": "npm run test",
-    "pretest": "npm run lint"
+    "prebuild": "npm run test"
   },
   "repository": {
     "type": "git",

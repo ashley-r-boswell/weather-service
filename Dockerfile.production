@@ -1,0 +1,15 @@
+FROM node:11
+
+WORKDIR /usr/src/app
+
+COPY build /usr/src/app/src/
+COPY resources /usr/src/app/resources/
+COPY package.json config.js .env /usr/src/app/
+
+ENV NODE_ENV production
+
+RUN npm install
+
+EXPOSE 8080/tcp
+
+CMD ["node", "src/index.js"]
