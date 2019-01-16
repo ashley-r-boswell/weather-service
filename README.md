@@ -5,6 +5,34 @@ Besides the requirement to use node.js, you are free to use any library or tool 
 
 Feel encouraged to dockerize your test and add a meaningful set of tests.
 
+## Building and Running
+
+### First things first
+
+To run anything you need to provide your OpenWeatherMap.org api key. Do this by creating the file `.env` at the root of the project and fill it with
+
+```
+OPEN_WEATHER_MAP_API_KEY=yourapikey
+```
+
+### Starting the server
+
+```
+npm start
+```
+
+This will locally run the tests, transpile the ES6 code and start the server on port `8080`
+
+### Running the dockerized tests
+
+Run the following commands to build the production docker container, build a testing docker container and finally to run the test container.
+
+```
+npm dockerize
+npm dockerize-tests
+npm test-container
+```
+
 ## Routes
 
 The following routes should be provided by the service. All the routes should deliver the response as json and indicate the response type with the proper content type.
