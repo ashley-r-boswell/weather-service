@@ -40,10 +40,6 @@ class WeatherServer {
   }
 
   configureRoutes() {
-    this.server.get('/echo/:name', (req, res, next) => {
-      res.send(req.params)
-      return next()
-    })
     this.server.get('/cities/:city_id/weather', (req, res, next) =>
       this.weatherController.getWeatherForCity(req, res, next)
     )
