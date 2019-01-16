@@ -22,7 +22,6 @@ export default class WeatherController {
         ) {
           return next(new NotFoundError({ code: 'NotFoundError' }, 'not found'))
         }
-        console.error(error)
         return next(error)
       })
   }

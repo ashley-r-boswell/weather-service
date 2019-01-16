@@ -16,7 +16,6 @@ export default class CityController {
       res.send(city)
       return next()
     } catch (error) {
-      console.error(error)
       return next(error)
     }
   }
@@ -35,7 +34,6 @@ export default class CityController {
       res.send(cities)
       return next()
     } catch (error) {
-      console.error(error)
       return next(error)
     }
   }
