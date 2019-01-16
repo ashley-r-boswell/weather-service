@@ -6,6 +6,8 @@ import { NotFoundError } from 'restify-errors'
 
 jest.mock('../../src/services/WeatherInformationService')
 
+const UNEXPECTED_ERROR = new Error('Unexpected error')
+
 let mockRequest
 let mockResponse
 let mockNextCallback
@@ -64,5 +66,25 @@ describe('get weather', () => {
     expect(mockNextCallback).toHaveBeenCalledWith(
       new NotFoundError({ code: 'NotFoundError' }, 'not found')
     )
+  })
+
+  test('with unexpected error', async () => {
+    serviceMock.getWeatherForCity.mockImplementation(() =>
+      Promise.reject(UNEXPECTED_ERROR)
+    )
+    const weatherController = new WeatherController(serviceMock)
+    mockRequest.params = { city_id: '5' }
+
+    await weatherController.getWeatherForCity(
+      mockRequest,
+      mockResponse,
+      mockNextCallback
+    )
+
+    expect(serviceMock.getWeatherForCity).toHaveBeenCalledTimes(1)
+    expect(serviceMock.getWeatherForCity).toHaveBeenCalledWith('5')
+    expect(mockResponse.send).not.toBeCalled()
+    expect(mockNextCallback).toHaveBeenCalledTimes(1)
+    expect(mockNextCallback).toHaveBeenCalledWith(UNEXPECTED_ERROR)
   })
 })

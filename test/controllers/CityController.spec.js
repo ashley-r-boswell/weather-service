@@ -8,6 +8,8 @@ import { NotFoundError, BadRequestError } from 'restify-errors'
 
 jest.mock('../../src/services/CityInformationService')
 
+const UNEXPECTED_ERROR = new Error('Unexpected error')
+
 let mockRequest
 let mockResponse
 let mockNextCallback
@@ -50,6 +52,22 @@ describe('get city', () => {
     expect(mockNextCallback).toHaveBeenCalledWith(
       new NotFoundError({ code: 'NotFoundError' }, 'not found')
     )
+  })
+
+  test('unexpected error', () => {
+    serviceMock.getCity.mockImplementation(cityId => {
+      throw UNEXPECTED_ERROR
+    })
+    const cityController = new CityController(serviceMock)
+    mockRequest.params = { city_id: '5' }
+
+    cityController.getCity(mockRequest, mockResponse, mockNextCallback)
+
+    expect(serviceMock.getCity).toHaveBeenCalledTimes(1)
+    expect(serviceMock.getCity).toHaveBeenCalledWith(5)
+    expect(mockResponse.send).not.toBeCalled()
+    expect(mockNextCallback).toHaveBeenCalledTimes(1)
+    expect(mockNextCallback).toHaveBeenCalledWith(UNEXPECTED_ERROR)
   })
 })
 
@@ -119,5 +137,21 @@ describe('find nearby cities', () => {
     expect(mockNextCallback).toHaveBeenCalledWith(
       new BadRequestError({ code: 'BadRequestError' }, 'lat/lng required')
     )
+  })
+
+  test('unexpected error', () => {
+    serviceMock.findNearbyCities.mockImplementation((latitude, longitude) => {
+      throw UNEXPECTED_ERROR
+    })
+    const cityController = new CityController(serviceMock)
+    mockRequest.query = { lat: '21', lng: '22' }
+
+    cityController.findNearbyCities(mockRequest, mockResponse, mockNextCallback)
+
+    expect(serviceMock.findNearbyCities).toHaveBeenCalledTimes(1)
+    expect(serviceMock.findNearbyCities).toHaveBeenCalledWith(21, 22)
+    expect(mockResponse.send).not.toBeCalled()
+    expect(mockNextCallback).toHaveBeenCalledTimes(1)
+    expect(mockNextCallback).toHaveBeenCalledWith(UNEXPECTED_ERROR)
   })
 })

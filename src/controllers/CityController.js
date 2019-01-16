@@ -17,7 +17,7 @@ export default class CityController {
       return next()
     } catch (error) {
       console.error(error)
-      return next(false)
+      return next(error)
     }
   }
 
